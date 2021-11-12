@@ -16,7 +16,8 @@ class PlayerArrow {
   }
 
 
-  //required for trajectory
+  // for trejactory
+
   // remove(index) {
   //   this.isRemoved = true;
   //   Matter.World.remove(world, this.body);
@@ -59,7 +60,6 @@ class PlayerArrow {
     image(this.image, 0, 0, this.width, this.height);
     
     pop();
-
 
     //optional code to add trajectory to the arrow
     

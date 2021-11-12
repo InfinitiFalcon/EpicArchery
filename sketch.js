@@ -7,6 +7,7 @@ var engine, world;
 var canvas,baseimage,playerimage;
 var palyer, playerBase, playerArcher;
 var playerArrows = [];
+var numberOfArrows = 10;
 var board1, board2;
 
 function preload() {
@@ -49,6 +50,7 @@ function draw() {
   image(playerimage,player.position.x,player.position.y,50,180)
 
   Engine.update(engine);
+
   playerArcher.display();
 
   board1.display();
@@ -57,6 +59,27 @@ function draw() {
   for (var i = 0; i < playerArrows.length; i++) {
     if (playerArrows[i] !== undefined) {
       playerArrows[i].display();
+
+      //with distance formula
+      d1 = dist(playerArrows[i].body.position.x,playerArrows[i].body.position.y, board1.body.position.x,board1.body.position.y)
+      if(d1<=100)
+      {
+        console.log("collision");
+      }
+
+      var board1Collision = Matter.SAT.collides(
+        board1.body,
+        playerArrows[i].body
+      );
+
+      var board2Collision = Matter.SAT.collides(
+        board2.body,
+        playerArrows[i].body
+      );
+
+      if (board1Collision.collided || board2Collision.collided) {
+        console.log("yes");
+      }
 
       //[optional code to add trajectory of arrow]
       
@@ -79,11 +102,20 @@ function draw() {
   textSize(40);
   text("EPIC ARCHERY", width / 2, 100);
 
+  // Arrow Count
+  fill("#FFFF");
+  textAlign("center");
+  textSize(30);
+  text("Remaining Arrows : " + numberOfArrows, 200, 100);
+
+  if (numberOfArrows == 0) {
+    console.log("arrow bucket is empty")
+  }
 }
 
 function keyPressed() {
   if (keyCode === 32) {
-   
+    if (numberOfArrows > 0) {
       var posX = playerArcher.body.position.x;
       var posY = playerArcher.body.position.y;
       var angle = playerArcher.body.angle;
@@ -93,8 +125,10 @@ function keyPressed() {
       arrow.trajectory = [];
       Matter.Body.setAngle(arrow.body, angle);
       playerArrows.push(arrow);
+      numberOfArrows -= 1;
     }
   }
+}
 
 function keyReleased() {
   if (keyCode === 32) {
@@ -104,5 +138,4 @@ function keyReleased() {
     }
   }
 }
-
 
