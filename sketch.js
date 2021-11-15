@@ -9,6 +9,7 @@ var palyer, playerBase, playerArcher;
 var playerArrows = [];
 var numberOfArrows = 10;
 var board1, board2;
+var score = 0
 
 function preload() {
   backgroundImg = loadImage("background.png");
@@ -79,6 +80,7 @@ function draw() {
 
       if (board1Collision.collided || board2Collision.collided) {
         console.log("yes");
+        score += 5
       }
 
       //[optional code to add trajectory of arrow]
@@ -108,8 +110,14 @@ function draw() {
   textSize(30);
   text("Remaining Arrows : " + numberOfArrows, 200, 100);
 
+  fill("FFFF")
+  textAlign("center")
+  textSize(30)
+  text("Score: " + score, windowWidth - 70, 100)
+
   if (numberOfArrows == 0) {
     console.log("arrow bucket is empty")
+    gameOver()
   }
 }
 
@@ -139,3 +147,17 @@ function keyReleased() {
   }
 }
 
+function gameOver() {
+  swal(
+    {
+      title: "Game Over!",
+      text: "Thanks for playing!",
+      confirmButtonText: "Play Again"
+    },
+    function isConfirm(){
+      if (isConfirm){
+        location.reload()
+      }
+    }
+  )
+}
